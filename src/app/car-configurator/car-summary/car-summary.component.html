@@ -1,1 +1,73 @@
-<p>car-summary works!</p>
+<div class="container" *ngIf="config(); let cfg">
+  <div class="row text-center">
+    <h1>Configure your own Tesla</h1>
+  </div>
+  <div class="row text-center">
+    <h2>Summary</h2>
+  </div>
+  <div class="row summary">
+    <h3>Your Tesla {{ cfg.model?.description }}</h3>
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+          <h4>{{ cfg.config?.description }}</h4>
+        </div>
+        <div class="col price-column">
+          {{ cfg.config?.price | currency : "USD" }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          Range: {{ cfg.config?.range }} miles - Max speed:
+          {{ cfg.config?.speed }}
+        </div>
+        <div class="col"></div>
+      </div>
+      <div class="row">
+        <div class="col-4">
+          <h4>{{ cfg.color?.description }} Color</h4>
+        </div>
+        <div class="col price-column">
+          <ng-container *ngIf="cfg.color?.price; else included">
+            {{ cfg.color?.price | currency : "USD" }}
+          </ng-container>
+          <ng-template #included>
+            <span style="font-style: italic">Included</span>
+          </ng-template>
+        </div>
+      </div>
+      <div class="row" *ngIf="cfg.yoke">
+        <div class="col-4">
+          <h4>Yoke steering wheel</h4>
+        </div>
+        <div class="col price-column">
+          {{ 1000 | currency : "USD" }}
+        </div>
+      </div>
+      <div class="row" *ngIf="cfg.towHitch">
+        <div class="col-4">
+          <h4>Tow Hitch package</h4>
+        </div>
+        <div class="col price-column">
+          {{ 1000 | currency : "USD" }}
+        </div>
+      </div>
+      <hr />
+      <div class="row">
+        <div class="col-4">
+          <h2>TOTAL COST</h2>
+        </div>
+        <div class="col price-column">
+          {{
+            (cfg.color?.price ?? 0) +
+              (cfg.config?.price ?? 0) +
+              (cfg.towHitch ? 1000 : 0) +
+              (cfg.yoke ? 1000 : 0) | currency : "USD"
+          }}
+        </div>
+      </div>
+      <hr />
+    </div>
+  </div>
+  <app-veichle-preview></app-veichle-preview>
+</div>

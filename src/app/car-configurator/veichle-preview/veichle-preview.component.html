@@ -1,0 +1,5 @@
+<div *ngIf="configuration()?.model" class="row text-center">
+  <div class="col float-center">
+    <img class="veichle-preview" [src]="configuration() | veichlePreviewPath" />
+  </div>
+</div>

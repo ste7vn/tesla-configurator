@@ -1,1 +1,70 @@
-<p>car-config works!</p>
+<div class="container">
+  <div class="row text-center">
+    <div class="column">
+      <h1>Configure your own Tesla</h1>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="column">
+      <h2>Select veichle configuration</h2>
+    </div>
+  </div>
+  <ng-container *ngIf="options(); let opts; else: loading">
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <label for="configSelect" class="form-label">Config</label>
+          <select
+            id="configSelect"
+            [ngModel]="selectedCarConfigId()"
+            (ngModelChange)="onSelectedCarConfigIdChange($event)"
+          >
+            <option value="">Choose...</option>
+            <option *ngFor="let config of configs()" [value]="config.id">
+              {{ config.description }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <ng-container *ngIf="selectedCarConfig(); let cfg">
+        <div class="col-5 text-center">
+          <h4>
+            Range: {{ cfg.range }} miles - Max speed: {{ cfg.speed }} - Cost:
+            {{ cfg.price | currency : "USD" }}
+          </h4>
+        </div>
+        <div class="col" *ngIf="opts.yoke || opts.towHitch">
+          <ng-container *ngIf="opts.yoke">
+            <label for="includeYoke" class="form-label"
+              >Yoke steering wheel</label
+            >
+            <input
+              id="includeYoke"
+              type="checkbox"
+              [ngModel]="includeYoke()"
+              (ngModelChange)="onIncludeYokeChange($event)"
+            />
+          </ng-container>
+          <ng-container *ngIf="opts.towHitch">
+            <label for="includeTow" class="form-label">Tow hitch</label>
+            <input
+              id="includeTow"
+              type="checkbox"
+              [ngModel]="includeTow()"
+              (ngModelChange)="onIncludeTowChange($event)"
+            />
+          </ng-container>
+        </div>
+      </ng-container>
+    </div>
+    <app-veichle-preview></app-veichle-preview>
+    <!-- <div class="row text-center">
+      <div class="col float-center">
+        <img class="veichle-preview" [src]="displayedVeichle" />
+      </div>
+    </div> -->
+  </ng-container>
+</div>
+<ng-template #loading>
+  <h1>Loading options...</h1>
+</ng-template>

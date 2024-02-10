@@ -1,20 +1,46 @@
-import { Routes } from '@angular/router';
-import { CarModelComponent } from './car-model/car-model.component';
-import { CarConfigComponent } from './car-config/car-config.component';
-import { CarSummaryComponent } from './car-summary/car-summary.component';
+import { computed, inject } from '@angular/core';
+import { Router, Routes } from '@angular/router';
+import { CarConfiguratorService } from './services';
 
 export const CONFIGURATOR_ROUTES: Routes = [
   {
     path: 'car-model',
-    component: CarModelComponent,
+    loadComponent: () =>
+      import('./car-model/car-model.component').then(
+        (m) => m.CarModelComponent
+      ),
   },
   {
     path: 'car-config',
-    component: CarConfigComponent,
+    loadComponent: () =>
+      import('./car-config/car-config.component').then(
+        (m) => m.CarConfigComponent
+      ),
+    canActivate: [
+      () => {
+        const srv = inject(CarConfiguratorService);
+        return (
+          srv.isModelValid(srv.configuration()) ||
+          inject(Router).createUrlTree(['/car-configurator'])
+        );
+      },
+    ],
   },
   {
     path: 'car-summary',
-    component: CarSummaryComponent,
+    loadComponent: () =>
+      import('./car-summary/car-summary.component').then(
+        (m) => m.CarSummaryComponent
+      ),
+    canActivate: [
+      () => {
+        const srv = inject(CarConfiguratorService);
+        return (
+          srv.isConfigurationValid(srv.configuration()) ||
+          inject(Router).createUrlTree(['/car-configurator'])
+        );
+      },
+    ],
   },
   {
     path: '**',

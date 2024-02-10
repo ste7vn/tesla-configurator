@@ -1,1 +1,50 @@
-<p>car-model works!</p>
+<div class="container text-center">
+  <div class="row">
+    <h1>Configure your own Tesla</h1>
+  </div>
+  <div class="row">
+    <h2>Pick model and color</h2>
+  </div>
+  <ng-container *ngIf="models()?.length; else loading">
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <label class="form-label" for="modelSelect">Model</label>
+          <select
+            id="modelSelect"
+            [ngModel]="selectedModel()"
+            (ngModelChange)="onSelectedModelChange($event)"
+          >
+            <option value="">Choose...</option>
+            <option *ngFor="let opt of models()" [value]="opt.code">
+              {{ opt.description }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3" *ngIf="selectedModel()">
+          <label class="form-label" for="colorSelect">Color</label>
+          <select
+            id="colorSelect"
+            [ngModel]="selectedColor()"
+            (ngModelChange)="onSelectedColorChange($event)"
+          >
+            <option *ngFor="let color of colors()" [value]="color.code">
+              {{ color.description }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row float-center">
+      <div class="col">
+        <img class="veichle-preview" [src]="displayedVeichle()" />
+      </div>
+    </div> -->
+    <app-veichle-preview></app-veichle-preview>
+  </ng-container>
+</div>
+<ng-template #loading>
+  <h1>Loading models...</h1>
+</ng-template>

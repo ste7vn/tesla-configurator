@@ -23,9 +23,7 @@ import { VeichlePreviewComponent } from '../veichle-preview/veichle-preview.comp
 })
 export class CarModelComponent {
   //#region Signals
-  protected configuration = computed(() =>
-    inject(CarConfiguratorService).configuration()
-  );
+  protected configuration = inject(CarConfiguratorService).configuration;
   protected models = toSignal(inject(CarConfiguratorService).getModels());
   protected colors: Signal<ICarColor[]> = computed(() => {
     const models = this.models();

@@ -9,7 +9,7 @@
       <h2>Select veichle configuration</h2>
     </div>
   </div>
-  <ng-container *ngIf="options(); let opts; else loading">
+  <ng-container *ngIf="options(); let opts; else: loading">
     <div class="row">
       <div class="col">
         <div class="mb-3">
@@ -26,36 +26,34 @@
           </select>
         </div>
       </div>
-      <ng-container *ngIf="selectedCarConfig(); let cfg">
-        <div class="col-5 text-center">
-          <h4>
-            Range: {{ cfg.range }} miles - Max speed: {{ cfg.speed }} - Cost:
-            {{ cfg.price | currency : "USD" }}
-          </h4>
-        </div>
-        <div class="col" *ngIf="opts.yoke || opts.towHitch">
-          <ng-container *ngIf="opts.yoke">
-            <label for="includeYoke" class="form-label"
-              >Yoke steering wheel</label
-            >
-            <input
-              id="includeYoke"
-              type="checkbox"
-              [ngModel]="includeYoke()"
-              (ngModelChange)="onIncludeYokeChange($event)"
-            />
-          </ng-container>
-          <ng-container *ngIf="opts.towHitch">
-            <label for="includeTow" class="form-label">Tow hitch</label>
-            <input
-              id="includeTow"
-              type="checkbox"
-              [ngModel]="includeTow()"
-              (ngModelChange)="onIncludeTowChange($event)"
-            />
-          </ng-container>
-        </div>
-      </ng-container>
+      <div class="col-5 text-center" *ngIf="selectedCarConfig(); let cfg">
+        <h4>
+          Range: {{ cfg.range }} miles - Max speed: {{ cfg.speed }} - Cost:
+          {{ cfg.price | currency : "USD" }}
+        </h4>
+      </div>
+      <div class="col" *ngIf="opts.yoke || opts.towHitch">
+        <ng-container *ngIf="opts.yoke">
+          <label for="includeYoke" class="form-label"
+            >Yoke steering wheel</label
+          >
+          <input
+            id="includeYoke"
+            type="checkbox"
+            [ngModel]="includeYoke()"
+            (ngModelChange)="onIncludeYokeChange($event)"
+          />
+        </ng-container>
+        <ng-container *ngIf="opts.towHitch">
+          <label for="includeTow" class="form-label">Tow hitch</label>
+          <input
+            id="includeTow"
+            type="checkbox"
+            [ngModel]="includeTow()"
+            (ngModelChange)="onIncludeTowChange($event)"
+          />
+        </ng-container>
+      </div>
     </div>
     <app-veichle-preview></app-veichle-preview>
   </ng-container>

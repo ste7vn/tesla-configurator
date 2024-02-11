@@ -44,9 +44,6 @@ export class CarConfigComponent {
     return configs.find((config) => config.id === selectedId);
   });
   //#endregion
-  //#region View properties
-  protected displayedVeichle!: string;
-  //#endregion
   constructor(private _carConfiguratorService: CarConfiguratorService) {
     const currentModel = this._carConfiguratorService.configuration();
     // this check should not be necessary since you can not land on this page without a model, but it is here to make this code more robust
@@ -55,7 +52,6 @@ export class CarConfigComponent {
       this.options = toSignal(
         this._carConfiguratorService.getOptions(currentModel.model.code)
       );
-      this.displayedVeichle = `assets/cars/${currentModel.model.code}/${currentModel.color?.code}.jpg`;
     }
   }
   //#region View hooks

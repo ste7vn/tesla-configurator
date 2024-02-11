@@ -9,7 +9,7 @@
       <h2>Select veichle configuration</h2>
     </div>
   </div>
-  <ng-container *ngIf="options(); let opts; else: loading">
+  <ng-container *ngIf="options(); let opts; else loading">
     <div class="row">
       <div class="col">
         <div class="mb-3">
@@ -58,11 +58,6 @@
       </ng-container>
     </div>
     <app-veichle-preview></app-veichle-preview>
-    <!-- <div class="row text-center">
-      <div class="col float-center">
-        <img class="veichle-preview" [src]="displayedVeichle" />
-      </div>
-    </div> -->
   </ng-container>
 </div>
 <ng-template #loading>

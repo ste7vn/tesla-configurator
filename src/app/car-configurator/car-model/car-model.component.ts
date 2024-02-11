@@ -23,6 +23,9 @@ import { VeichlePreviewComponent } from '../veichle-preview/veichle-preview.comp
 })
 export class CarModelComponent {
   //#region Signals
+  protected configuration = computed(() =>
+    inject(CarConfiguratorService).configuration()
+  );
   protected models = toSignal(inject(CarConfiguratorService).getModels());
   protected colors: Signal<ICarColor[]> = computed(() => {
     const models = this.models();
@@ -31,17 +34,11 @@ export class CarModelComponent {
     return models.find((model) => model.code === currentModel)?.colors ?? [];
   });
   protected selectedModel: WritableSignal<string> = signal<string>(
-    this._carConfiguratorService.configuration()?.model?.code ?? ''
+    this.configuration()?.model?.code ?? ''
   );
   protected selectedColor: WritableSignal<string> = signal<string>(
-    this._carConfiguratorService.configuration()?.color?.code ?? ''
+    this.configuration()?.color?.code ?? ''
   );
-  protected displayedVeichle: Signal<string> = computed(() => {
-    const model = this.selectedModel();
-    const color = this.selectedColor();
-    if (!model || !color) return '';
-    return `assets/cars/${this.selectedModel()}/${this.selectedColor()}.jpg`;
-  });
   //#endregion
   constructor(private _carConfiguratorService: CarConfiguratorService) {}
   //#region View hooks
@@ -57,7 +54,7 @@ export class CarModelComponent {
   protected onSelectedColorChange(colorCode: string): void {
     this.selectedColor.set(colorCode);
     this._carConfiguratorService.configuration.set({
-      ...this._carConfiguratorService.configuration(),
+      ...this.configuration(),
       color: this.colors().find((color) => color.code === colorCode),
     });
   }
